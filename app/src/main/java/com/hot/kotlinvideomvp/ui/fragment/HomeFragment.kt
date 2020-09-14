@@ -101,6 +101,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     }
 
     override fun setHomeData(homeBean: HomeBean) {
+        mRefreshLayout.finishRefresh(true)
         mLayoutStatusView?.showContent()
 //        Logger.d(homeBean)
         mHomeAdapter = activity?.let { HomeAdapter(it, homeBean.issueList[0].itemList) }

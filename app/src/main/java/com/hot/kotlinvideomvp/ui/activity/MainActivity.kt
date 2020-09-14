@@ -20,7 +20,6 @@ class MainActivity : BaseActivity() {
     override fun getLayout(): Int =R.layout.activity_main
     private var mIndex: Int = 0
     private val mIconUnSelectIds =  intArrayOf(R.mipmap.ic_home_normal,R.mipmap.ic_discovery_normal,R.mipmap.ic_hot_normal,R.mipmap.ic_mine_normal)
-
     private val mIconSelectIds = intArrayOf(R.mipmap.ic_home_selected,R.mipmap.ic_discovery_selected,R.mipmap.ic_hot_selected,R.mipmap.ic_mine_selected)
 
     private val mTabEntities = ArrayList<CustomTabEntity>()
