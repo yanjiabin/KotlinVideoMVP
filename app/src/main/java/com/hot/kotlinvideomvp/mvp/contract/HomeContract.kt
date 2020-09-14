@@ -20,7 +20,7 @@ interface HomeContract {
         /**
          *设置加载更多的数据
          */
-        fun setMoreData()
+        fun setMoreData(itemList:ArrayList<HomeBean.Issue.Item>)
 
         /**
          * 显示错误信息

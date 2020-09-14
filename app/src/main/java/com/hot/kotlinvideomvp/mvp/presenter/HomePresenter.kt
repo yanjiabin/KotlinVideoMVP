@@ -77,6 +77,24 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
     }
 
     override fun loadMoreData() {
-
+        nextPageUrl?.let {
+            homeModel.loadMoreData(it)
+                .subscribe({ homeBean ->
+                    mRootView?.apply {
+                        val newItemList = homeBean.issueList[0].itemList
+                        newItemList.filter { item ->
+                            item.type == "banner2" || item.type == "horizontalScrollCard"
+                        }.forEach { item ->
+                            newItemList.remove(item)
+                        }
+                        nextPageUrl = homeBean.nextPageUrl
+                        setMoreData(newItemList)
+                    }
+                }, { t ->
+                    mRootView?.apply {
+                        showError(ExceptionHandle.handleException(t), ExceptionHandle.errorCode)
+                    }
+                })
+        }
     }
 }

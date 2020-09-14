@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hot.kotlinvideomvp.R
 import com.hot.kotlinvideomvp.base.BaseFragment
 import com.hot.kotlinvideomvp.mvp.contract.HomeContract
@@ -25,30 +26,38 @@ import java.util.logging.Logger
  *  date   : 2020/9/1
  *  desc   :
  */
-class HomeFragment : BaseFragment(),HomeContract.View {
+class HomeFragment : BaseFragment(), HomeContract.View {
 
     private val mPresenter by lazy { HomePresenter() }
-    private var mTitle: String?=null
+    private var mTitle: String? = null
     private var isRefresh = false
-    private var num:Int = 1
-    private var mHomeAdapter:HomeAdapter?=null
-    private val linearLayoutManager by lazy { LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false) }
+    private var num: Int = 1
+    private var mHomeAdapter: HomeAdapter? = null
+    private val linearLayoutManager by lazy {
+        LinearLayoutManager(
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+    }
+    private var loadingMore = false
 
     private var mMaterialHeader: MaterialHeader? = null
-    companion object{
-       fun getInstance(title:String):HomeFragment{
-           val fragment=HomeFragment()
-           val bundle = Bundle()
-           fragment.arguments = bundle
-           fragment.mTitle = title
-           return fragment
-       }
-   }
+
+    companion object {
+        fun getInstance(title: String): HomeFragment {
+            val fragment = HomeFragment()
+            val bundle = Bundle()
+            fragment.arguments = bundle
+            fragment.mTitle = title
+            return fragment
+        }
+    }
 
     override fun initView() {
         mPresenter.attachView(this)
         mRefreshLayout.setEnableHeaderTranslationContent(true)
-        mRefreshLayout.setOnRefreshListener{
+        mRefreshLayout.setOnRefreshListener {
             isRefresh = true
             mPresenter.requestHomeData(num)
         }
@@ -57,10 +66,25 @@ class HomeFragment : BaseFragment(),HomeContract.View {
         mMaterialHeader?.setShowBezierWave(true)
         //设置下拉刷新主题颜色
         mRefreshLayout.setPrimaryColorsId(R.color.color_light_black, R.color.color_title_bg)
-
-
 //        iv_search.setOnClickListener { openSearchActivity() }
 
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val childCount = mRecyclerView.childCount
+                    val itemCount = mRecyclerView.layoutManager?.itemCount
+                    val findFirstVisibleItemPosition =
+                        (mRecyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (findFirstVisibleItemPosition+childCount==itemCount){
+                        if (!loadingMore){
+                            loadingMore =true
+                            mPresenter.loadMoreData()
+                        }
+                    }
+                }
+            }
+        })
         mLayoutStatusView = multipleStatusView
 
         //状态栏透明和间距处理
@@ -73,21 +97,22 @@ class HomeFragment : BaseFragment(),HomeContract.View {
     }
 
     override fun lazyLoad() {
-
+        mPresenter?.requestHomeData(num)
     }
 
     override fun setHomeData(homeBean: HomeBean) {
         mLayoutStatusView?.showContent()
 //        Logger.d(homeBean)
-        mHomeAdapter = activity?.let {  HomeAdapter(it,homeBean.issueList[0].itemList)}
+        mHomeAdapter = activity?.let { HomeAdapter(it, homeBean.issueList[0].itemList) }
         mHomeAdapter?.setBannerSize(homeBean.issueList[0].count)
         mRecyclerView.adapter = mHomeAdapter
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.itemAnimator = DefaultItemAnimator()
     }
 
-    override fun setMoreData() {
-
+    override fun setMoreData(itemList:ArrayList<HomeBean.Issue.Item>) {
+        loadingMore = false
+        mHomeAdapter?.addItemData(itemList)
     }
 
     override fun showError(msg: String, errorCode: Int) {
