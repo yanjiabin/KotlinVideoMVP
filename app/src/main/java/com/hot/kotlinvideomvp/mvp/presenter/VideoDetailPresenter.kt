@@ -50,6 +50,7 @@ class VideoDetailPresenter :BasePresenter<VideoDetailContact.View>(),VideoDetail
         backgroundUrl.let { mRootView?.setBackground(it) }
 
         mRootView?.setVideoInfo(itemInfo)
+
     }
 
     override fun requestRelatedVideo(id: Long) {
