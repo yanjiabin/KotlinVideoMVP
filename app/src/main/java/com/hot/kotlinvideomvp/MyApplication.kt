@@ -2,6 +2,7 @@ package com.hot.kotlinvideomvp
 
 import android.app.Application
 import android.content.Context
+import com.hot.kotlinvideomvp.utils.DisplayManager
 import com.squareup.leakcanary.RefWatcher
 import kotlin.properties.Delegates
 
@@ -29,5 +30,6 @@ class MyApplication :Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        DisplayManager.init(this)
     }
 }

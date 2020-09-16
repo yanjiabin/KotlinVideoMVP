@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.hot.kotlinvideomvp"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -63,4 +63,6 @@ dependencies {
     implementation(rootProject.ext.glideOkhttp) {
         exclude group: 'glide-parent'
     }
+    // 视屏播放器
+    implementation 'com.shuyu:GSYVideoPlayer:2.1.1'
 }
