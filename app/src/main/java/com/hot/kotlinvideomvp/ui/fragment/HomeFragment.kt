@@ -27,6 +27,16 @@ import java.util.logging.Logger
  *  desc   :
  */
 class HomeFragment : BaseFragment(), HomeContract.View {
+    companion object {
+        fun getInstance(title: String): HomeFragment{
+            val fragment = HomeFragment()
+            val bundle = Bundle()
+            fragment.arguments = bundle
+            fragment.mTitle = title
+            return fragment
+        }
+    }
+
 
     private val mPresenter by lazy { HomePresenter() }
     private var mTitle: String? = null
@@ -44,16 +54,6 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     }
 
     private var mMaterialHeader: MaterialHeader? = null
-
-    companion object {
-        fun getInstance(title: String): HomeFragment {
-            val fragment = HomeFragment()
-            val bundle = Bundle()
-            fragment.arguments = bundle
-            fragment.mTitle = title
-            return fragment
-        }
-    }
 
     override fun initView() {
         mPresenter.attachView(this)
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         mPresenter.requestHomeData(num)
     }
 
-    override fun setHomeData(homeBean: HomeBean) {
+    override fun  setHomeData(homeBean: HomeBean) {
         mRefreshLayout.finishRefresh()
         mLayoutStatusView?.showContent()
 //        Logger.d(homeBean)

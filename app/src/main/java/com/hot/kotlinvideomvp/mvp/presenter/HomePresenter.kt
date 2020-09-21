@@ -60,7 +60,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                     //赋值过滤后的数据 + banner 数据
                     bannerHomeBean?.issueList!![0].itemList.addAll(newBannerItemList)
 
-                    setHomeData(bannerHomeBean!!)
+                    mRootView?.setHomeData(bannerHomeBean!!)
                 }
             }, { t ->
                 {

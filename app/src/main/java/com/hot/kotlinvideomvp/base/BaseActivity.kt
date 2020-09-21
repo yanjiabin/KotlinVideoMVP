@@ -9,6 +9,7 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.hot.kotlinvideomvp.MyApplication
 import com.hot.kotlinvideomvp.views.MultipleStatusView
+import com.scwang.smartrefresh.header.MaterialHeader
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -19,7 +20,7 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
 
-    protected var mLayoutStatusView: MultipleStatusView? = null
+    var mLayoutStatusView: MultipleStatusView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayout())
@@ -46,6 +47,7 @@ abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCall
 
     abstract fun initData()
 
+    @LayoutRes
     abstract fun getLayout(): Int
 
 
