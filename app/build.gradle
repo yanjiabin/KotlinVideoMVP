@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android-extensions' //扩展插件
+
+//apply plugin: 'kotlin-kapt'  //kapt3插件
 
 android {
     compileSdkVersion 30
@@ -14,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -21,6 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
+
 }
 
 dependencies {
@@ -65,4 +70,9 @@ dependencies {
     }
     // 视屏播放器
     implementation 'com.shuyu:GSYVideoPlayer:2.1.1'
+    //androidx替换support
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    //Google开源的一个布局控件
+    implementation 'com.google.android:flexbox:0.3.1'
 }
