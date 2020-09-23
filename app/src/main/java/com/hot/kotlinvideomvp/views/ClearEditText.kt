@@ -70,6 +70,8 @@ class ClearEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                 val isInnerHeight = y > distance && y < distance + height
                 if (isInnerWidth && isInnerHeight) {
                     this.setText("")
+                    onDeleteInputListener?.onDeleteInputListener()
+
                 }
             }
         }
@@ -108,6 +110,16 @@ class ClearEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     override fun afterTextChanged(s: Editable) {
 
+    }
+
+    interface OnDeleteInputListener{
+        fun  onDeleteInputListener()
+    }
+
+    private var onDeleteInputListener:OnDeleteInputListener?=null
+
+    fun setOnDeleteInputListener(onDeleteInputListener: OnDeleteInputListener){
+        this.onDeleteInputListener = onDeleteInputListener
     }
 
 

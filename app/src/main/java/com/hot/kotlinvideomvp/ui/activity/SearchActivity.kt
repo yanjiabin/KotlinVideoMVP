@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.*
@@ -21,6 +22,7 @@ import com.hot.kotlinvideomvp.ui.adapter.CategoryDetailAdapter
 import com.hot.kotlinvideomvp.ui.adapter.HotKeywordsAdapter
 import com.hot.kotlinvideomvp.utils.StatusBarUtil
 import com.hot.kotlinvideomvp.utils.ViewAnimUtils
+import com.hot.kotlinvideomvp.views.ClearEditText
 import kotlinx.android.synthetic.main.activity_search.*
 
 /**
@@ -41,7 +43,7 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     private var keyWords: String? = null
     private var itemList = ArrayList<HomeBean.Issue.Item>()
     private var mLoadMore = false
-    private var mHotKeywordsAdapter :HotKeywordsAdapter?=null
+    private var mHotKeywordsAdapter: HotKeywordsAdapter? = null
     private val mPresenter: SearchPresenter by lazy { SearchPresenter() }
 
     init {
@@ -98,7 +100,12 @@ class SearchActivity : BaseActivity(), SearchContract.View {
             }
         })
         mLayoutStatusView = multipleStatusView
-
+        et_search_view.setOnDeleteInputListener(object : ClearEditText.OnDeleteInputListener {
+            override fun onDeleteInputListener() {
+                showToast("点击了删除按钮")
+                mPresenter.querySearchData("")
+            }
+        })
 
         //状态栏透明和间距处理
         StatusBarUtil.darkMode(this)
@@ -141,10 +148,11 @@ class SearchActivity : BaseActivity(), SearchContract.View {
             mPresenter.querySearchData(it)
         }
     }
+
     /**
      * 显示热门关键字的 流式布局
      */
-    private fun showHotWordView(){
+    private fun showHotWordView() {
         layout_hot_words.visibility = View.VISIBLE
         layout_content_result.visibility = View.GONE
     }
@@ -156,7 +164,8 @@ class SearchActivity : BaseActivity(), SearchContract.View {
         mLoadMore = false
         hideHotWordView()
         tv_search_count.visibility = View.VISIBLE
-        tv_search_count.text = String.format(resources.getString(R.string.search_result_count), keyWords, issue.total)
+        tv_search_count.text =
+            String.format(resources.getString(R.string.search_result_count), keyWords, issue.total)
         itemList = issue.itemList
         mResultAdapter.addData(itemList)
     }
@@ -165,7 +174,7 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     /**
      * 隐藏热门关键字的 View
      */
-    private fun hideHotWordView(){
+    private fun hideHotWordView() {
         layout_hot_words.visibility = View.GONE
         layout_content_result.visibility = View.VISIBLE
     }
@@ -175,7 +184,10 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     }
 
     override fun setEmptyView() {
-
+        showToast("抱歉，没有找到相匹配的内容")
+        hideHotWordView()
+        tv_search_count.visibility = View.GONE
+        mLayoutStatusView?.showEmpty()
     }
 
     override fun showError(errorMsg: String, errorCode: Int) {

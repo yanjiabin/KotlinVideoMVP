@@ -117,9 +117,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
 
 //        iv_search.setOnClickListener { openSearchActivity() }
-
         mLayoutStatusView = multipleStatusView
-
         //状态栏透明和间距处理
         activity?.let { StatusBarUtil.darkMode(it) }
         activity?.let { StatusBarUtil.setPaddingSmart(it, toolbar) }
@@ -164,6 +162,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     override fun dismissLoading() {
 
     }
+
     fun getColor(colorId: Int): Int {
         return resources.getColor(colorId)
     }

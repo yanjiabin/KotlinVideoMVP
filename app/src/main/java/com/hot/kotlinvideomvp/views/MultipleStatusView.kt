@@ -79,7 +79,7 @@ class MultipleStatusView : RelativeLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        clear(mEmptyView!!, mLoadingView!!, mErrorView!!, mNoNetworkView!!)
+        clear(mEmptyView, mLoadingView, mErrorView, mNoNetworkView)
         if (null != mOtherIds) {
             mOtherIds.clear()
         }
@@ -286,7 +286,7 @@ class MultipleStatusView : RelativeLayout {
         }
     }
 
-    private fun clear(vararg views: View) {
+    private fun clear(vararg views: View?) {
         if (null == views) {
             return
         }

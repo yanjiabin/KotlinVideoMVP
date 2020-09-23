@@ -74,7 +74,25 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
     }
 
     override fun loadMoreData() {
-
+        checkViewAttached()
+        nextPageUrl?.let {
+            addSubscription(
+                disposable = searchModel.loadMoreData(it)
+                    .subscribe({ issue ->
+                        mRootView?.apply {
+                            nextPageUrl = issue.nextPageUrl
+                            setSearchResult(issue)
+                        }
+                    }, { throwable ->
+                        mRootView?.apply {
+                            showError(
+                                ExceptionHandle.handleException(throwable),
+                                ExceptionHandle.errorCode
+                            )
+                        }
+                    })
+            )
+        }
     }
 
 
