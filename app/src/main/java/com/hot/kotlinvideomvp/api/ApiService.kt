@@ -41,4 +41,10 @@ interface ApiService {
     @GET
     fun getIssueData(@Url url: String): Observable<HomeBean.Issue>
 
+    /**
+     * 关注
+     */
+    @GET("v4/tabs/follow")
+    fun getFollowInfo():Observable<HomeBean.Issue>
+
 }
