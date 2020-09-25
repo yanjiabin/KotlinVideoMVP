@@ -21,12 +21,15 @@ open class BasePresenter<T : IBaseView> : IPresenter<T> {
 
     override fun attachView(mRootView: T) {
         this.mRootView = mRootView
+        //保证activity结束时取消所有正在执行的订阅
+        if (!compositeDisposable.isDisposed) {
+            compositeDisposable.clear()
+        }
     }
 
     override fun detachView() {
         mRootView = null
         //todo  取消订阅
-
     }
 
     fun checkViewAttached() {

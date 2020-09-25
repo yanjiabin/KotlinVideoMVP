@@ -60,7 +60,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                     //赋值过滤后的数据 + banner 数据
                     bannerHomeBean?.issueList!![0].itemList.addAll(newBannerItemList)
 
-                    setHomeData(bannerHomeBean!!)
+                    mRootView?.setHomeData(bannerHomeBean!!)
                 }
             }, { t ->
                 {
@@ -77,24 +77,34 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
     }
 
     override fun loadMoreData() {
-        nextPageUrl?.let {
+        val disposable = nextPageUrl?.let {
             homeModel.loadMoreData(it)
-                .subscribe({ homeBean ->
+                .subscribe({ homeBean->
                     mRootView?.apply {
+                        //过滤掉 Banner2(包含广告,等不需要的 Type), 具体查看接口分析
                         val newItemList = homeBean.issueList[0].itemList
+
                         newItemList.filter { item ->
-                            item.type == "banner2" || item.type == "horizontalScrollCard"
-                        }.forEach { item ->
+                            item.type=="banner2"||item.type=="horizontalScrollCard"
+                        }.forEach{ item ->
+                            //移除 item
                             newItemList.remove(item)
                         }
+
                         nextPageUrl = homeBean.nextPageUrl
                         setMoreData(newItemList)
                     }
-                }, { t ->
+
+                },{ t ->
                     mRootView?.apply {
-                        showError(ExceptionHandle.handleException(t), ExceptionHandle.errorCode)
+                        showError(ExceptionHandle.handleException(t),ExceptionHandle.errorCode)
                     }
                 })
+
+
+        }
+        if (disposable != null) {
+            addSubscription(disposable)
         }
     }
 }

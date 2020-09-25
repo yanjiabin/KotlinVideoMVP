@@ -1,14 +1,18 @@
 package com.hot.kotlinvideomvp.base
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.hot.kotlinvideomvp.MyApplication
 import com.hot.kotlinvideomvp.views.MultipleStatusView
+import com.scwang.smartrefresh.header.MaterialHeader
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -19,7 +23,7 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
 
-    protected var mLayoutStatusView: MultipleStatusView? = null
+    var mLayoutStatusView: MultipleStatusView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayout())
@@ -46,6 +50,7 @@ abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCall
 
     abstract fun initData()
 
+    @LayoutRes
     abstract fun getLayout(): Int
 
 
@@ -101,5 +106,21 @@ abstract class BaseActivity : AppCompatActivity(),EasyPermissions.PermissionCall
     override fun onDestroy() {
         super.onDestroy()
         MyApplication.getRefWatcher(this)?.watch(this)
+    }
+
+    /**
+     * 打卡软键盘
+     */
+    fun openKeyBord(mEditText: EditText, mContext: Context) {
+        val imm = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN)
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+    /**
+     * 关闭软键盘
+     */
+    fun closeKeyBord(mEditText: EditText, mContext: Context) {
+        val imm = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(mEditText.windowToken, 0)
     }
 }

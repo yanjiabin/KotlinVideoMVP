@@ -2,6 +2,9 @@ package com.hot.kotlinvideomvp
 
 import android.app.Application
 import android.content.Context
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
+import com.hot.kotlinvideomvp.utils.DisplayManager
 import com.squareup.leakcanary.RefWatcher
 import kotlin.properties.Delegates
 
@@ -10,7 +13,7 @@ import kotlin.properties.Delegates
  * on 2020/9/3.
  * desc:
  */
-class MyApplication :Application() {
+class MyApplication :MultiDexApplication() {
 
     private var refWatcher: RefWatcher? = null
         companion object {
@@ -29,5 +32,7 @@ class MyApplication :Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        DisplayManager.init(this)
+        MultiDex.install(context)
     }
 }

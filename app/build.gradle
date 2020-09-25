@@ -1,19 +1,25 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android-extensions' //扩展插件
+
+//apply plugin: 'kotlin-kapt'  //kapt3插件
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.hot.kotlinvideomvp"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        // 实现毛玻璃那种透明的效果需要添加的库
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true    // Enable RS support
+
     }
     buildTypes {
         release {
@@ -21,6 +27,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
+
 }
 
 dependencies {
@@ -63,4 +72,13 @@ dependencies {
     implementation(rootProject.ext.glideOkhttp) {
         exclude group: 'glide-parent'
     }
+    // 视屏播放器
+    implementation 'com.shuyu:GSYVideoPlayer:2.1.1'
+    //androidx替换support
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    //Google开源的一个布局控件
+    implementation 'com.google.android:flexbox:0.3.1'
+    //模糊透明 View
+    implementation 'com.github.mmin18:realtimeblurview:1.1.0'
 }

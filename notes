@@ -1,0 +1,8 @@
+
+//mvp 结构设计
+1.每一个Fragment或者Activity都会对应的设计两个接口 一个是给Activity使用一个是给presenter使用的,
+在fragment中绑定presenter  这样的话 在fragment中就可以调用presenter 接口使用回调个具体的pretener实现
+在presenter具体实现完成之后调用fragment的接口   会回调给fragment接口具体实现类也就是fragment
+fragment 中的接口中会封装一个showloading和dismissloading的接口供使用
+2. recyclerView滑动接听
+

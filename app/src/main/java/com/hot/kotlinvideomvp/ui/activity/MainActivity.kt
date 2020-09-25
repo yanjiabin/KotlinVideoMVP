@@ -1,6 +1,7 @@
 package com.hot.kotlinvideomvp.ui.activity
 
 import android.os.Bundle
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.flyco.tablayout.listener.CustomTabEntity
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
 
 
+    @LayoutRes
     override fun getLayout(): Int =R.layout.activity_main
     private var mIndex: Int = 0
     private val mIconUnSelectIds =  intArrayOf(R.mipmap.ic_home_normal,R.mipmap.ic_discovery_normal,R.mipmap.ic_hot_normal,R.mipmap.ic_mine_normal)
@@ -35,7 +37,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-
     }
 
     private fun switchFragment(position: Int) {
@@ -44,7 +45,7 @@ class MainActivity : BaseActivity() {
         when (position) {
             0 -> mHomeFragment?.let{
                 transaction.show(it)
-            }?:HomeFragment.getInstance(mTitles[position]).let {
+            }?: HomeFragment.getInstance(mTitles[position]).let {
                 mHomeFragment = it
                 transaction.add(R.id.fl_container,it,"home")
             }
@@ -97,7 +98,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initTab() {
-        (0 until mTitles.size).mapTo(mTabEntities){
+        (mTitles.indices).mapTo(mTabEntities){
             TabEntity(mTitles[it],mIconSelectIds[it],mIconUnSelectIds[it])
         }
 
