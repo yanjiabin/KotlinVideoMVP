@@ -1,5 +1,6 @@
 package com.hot.kotlinvideomvp.api
 
+import com.hot.kotlinvideomvp.mvp.model.bean.CategoryBean
 import com.hot.kotlinvideomvp.mvp.model.bean.HomeBean
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -46,5 +47,16 @@ interface ApiService {
      */
     @GET("v4/tabs/follow")
     fun getFollowInfo():Observable<HomeBean.Issue>
+
+    @GET("v4/categories")
+    fun getCategoryData():Observable<ArrayList<CategoryBean>>
+
+    /**
+     * 获取分类详情List
+     */
+    @GET("v4/categories/videoList?")
+    fun getCategoryDetailList(@Query("id") id: Long): Observable<HomeBean.Issue>
+
+
 
 }

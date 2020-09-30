@@ -41,7 +41,7 @@ object RetrofitManager {
         //添加一个打印器,打印所有的log信息
         val httpLoggingIntercepter = HttpLoggingInterceptor()
         //可以设置请求过滤的水平,body,basic, headers
-        httpLoggingIntercepter.level =HttpLoggingInterceptor.Level.BODY
+        httpLoggingIntercepter.level =HttpLoggingInterceptor.Level.HEADERS
 
         //
         val cacheFile = File(MyApplication.context.cacheDir,"cache")
