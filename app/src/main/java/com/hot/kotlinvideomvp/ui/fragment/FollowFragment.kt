@@ -2,6 +2,7 @@ package com.hot.kotlinvideomvp.ui.fragment
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hot.kotlinvideomvp.R
 import com.hot.kotlinvideomvp.base.BaseFragment
 import com.hot.kotlinvideomvp.mvp.contract.FollowContract
@@ -43,6 +44,18 @@ class FollowFragment : BaseFragment(), FollowContract.View {
         mRecyclerView.adapter = mFollowAdapter
 
 
+        mRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val itemCount = recyclerView.layoutManager?.itemCount
+                val lastItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                if (!mLoadMore&&lastItemPosition == (itemCount?.minus(1))){
+                    mLoadMore = true
+                    mPresenter.loadMoreData()
+                }
+            }
+        })
         this.mLayoutStatusView = multipleStatusView
     }
 
