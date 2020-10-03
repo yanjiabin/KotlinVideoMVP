@@ -20,7 +20,7 @@ interface CatetgoryDetailContract {
 
         fun getCategoryDetailList(id: Long)
 
-        fun loadMoreData(url: String)
+        fun loadMoreData()
     }
 
 }
