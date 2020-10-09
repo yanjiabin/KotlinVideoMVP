@@ -35,11 +35,13 @@ class CategoryDetailPresenter:BasePresenter<CatetgoryDetailContract.View>(),Cate
             }))
     }
 
-    override fun loadMoreData(url: String) {
+    override fun loadMoreData() {
         checkViewAttached()
-        addSubscription(disposable =  categoryModel.loadMoreData(url)
-            .subscribe({data->
+        val disposable =  nextUrl?.let{
+            categoryModel.loadMoreData(it).subscribe({
+                data->
                 mRootView?.apply {
+                    dismissLoading()
                     nextUrl = data.nextPageUrl
                     setCategoryList(data.itemList)
                 }
@@ -47,7 +49,9 @@ class CategoryDetailPresenter:BasePresenter<CatetgoryDetailContract.View>(),Cate
                 mRootView?.apply {
                     showError(ExceptionHandle.handleException(throwable))
                 }
-            }))
+            })
+        }
+        disposable?.let { addSubscription(it) }
     }
 
 

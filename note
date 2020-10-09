@@ -1,0 +1,11 @@
+
+//mvp架构
+
+BaseFragment  BasePresent
+1:例如新建一个HomeFragment  定义个HomeContact.View的接口 里面有Presenter中需要用到的回调函数
+  然后在HomeFragment中新建一个HomePresenter就可以使用了
+  再来说HomePresenter 实现HomeContact.Presenter  里面有HomeFragment中需要用到的函数
+  HomePresenter 有一个attach(HomeFragment)来绑定 从而来实现mvp框架
+
+
+2：rxjava
